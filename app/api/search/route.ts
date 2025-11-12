@@ -2,7 +2,7 @@
 
 import { NextResponse } from 'next/server';
 import Fuse from 'fuse.js';
-import NerPipeline from '@/app/lib/ner'; // Use the alias
+// NerPipeline import is removed
 
 // --- DATABASE (Hardcoded to guarantee it works) ---
 const db = [
@@ -53,69 +53,32 @@ const fuse = new Fuse(db, {
 });
 
 export const dynamic = 'force-dynamic';
-export const maxDuration = 60; // Allow 60s for model loading
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const query = searchParams.get('query');
-    
+
     if (!query) {
       return NextResponse.json({ error: 'Query parameter is required' }, { status: 400 });
     }
 
     console.log(`🔍 Query: "${query}"`);
 
-    let allResults: any[] = [];
-    const addedIds = new Set();
-    let usedNER = false;
+    // --- All NER code is removed ---
 
-    // Try NER with 5-second timeout
-    try {
-      const nerPromise = NerPipeline.getInstance();
-      const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('timeout')), 5000)
-      );
-      
-      const ner = await Promise.race([nerPromise, timeoutPromise]);
-      
-      if (ner) {
-        const extractedEntities: any[] = await (ner as any)(query);
-        console.log("✅ NER entities:", extractedEntities);
+    // We only do the direct Fuse.js search
+    console.log('🔍 Using direct search');
+    const searchResults = fuse.search(query);
+    const allResults: any[] = [];
 
-        if (extractedEntities.length > 0) {
-          usedNER = true;
-          for (const entity of extractedEntities) {
-            const searchResults = fuse.search(entity.word);
-            for (const result of searchResults) {
-              if (!addedIds.has(result.item.id)) {
-                allResults.push(result.item); // <-- THIS IS NOW CORRECT
-                addedIds.add(result.item.id);
-              }
-            }
-          }
-        }
-      }
-    } catch (nerError) {
-      console.warn("⚠️ NER failed:", nerError);
-    }
-
-    // Fallback: Direct Fuse.js search
-    if (!usedNER || allResults.length === 0) {
-      console.log('🔍 Using direct search');
-      const searchResults = fuse.search(query);
-      
-      for (const result of searchResults) {
-        if (!addedIds.has(result.item.id)) {
-          allResults.push(result.item); // <-- THIS IS NOW CORRECT
-          addedIds.add(result.item.id);
-        }
-      }
+    for (const result of searchResults) {
+      allResults.push(result.item);
     }
 
     console.log(`✅ Found ${allResults.length} results`);
     return NextResponse.json(allResults);
-    
+
   } catch (error) {
     console.error("❌ Search error:", error);
     return NextResponse.json({ 
