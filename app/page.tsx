@@ -44,7 +44,7 @@ export default function Home() {
       {/* Ayurveda Logo with Green Background */}
       <div className="relative w-24 h-24 rounded-full bg-green-500 flex items-center justify-center mb-6 shadow-xl overflow-hidden">
         <Image
-          src="/366-3666700_ayurveda-symbol-png-natural-medicine-logo.jpg" // Path to your logo in the public folder" // Path to your logo in the public folder
+          src="/366-3666700_ayurveda-symbol-png-natural-medicine-logo.jpg" // Path to your logo in the public folder
           alt="Ayurveda Symbol"
           width={60} // Adjust size as needed
           height={60} // Adjust size as needed
@@ -52,26 +52,26 @@ export default function Home() {
         />
       </div>
 
-      <h1 className="text-4xl md:text-5xl font-bold mb-8 text-indigo-800">
+      <h1 className="text-4xl md:text-5xl font-bold mb-8 text-green-800">
         AyurAssist Portal
       </h1>
 
       {/* Search Bar */}
       <form 
         onSubmit={handleSearch} 
-        className="w-full max-w-2xl flex shadow-lg shadow-indigo-100"
+        className="w-full max-w-2xl flex shadow-lg shadow-green-100"
       >
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Enter an Ayurvedic or English term (e.g., 'Jvara' or 'Fever')"
-          className="flex-grow p-4 border-2 border-indigo-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 text-lg"
+          className="flex-grow p-4 border-2 border-green-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-800 text-lg"
         />
         <button
           type="submit"
           disabled={isLoading}
-          className="p-4 bg-indigo-600 text-white rounded-r-lg font-semibold hover:bg-indigo-700 disabled:bg-gray-400 text-lg"
+          className="p-4 bg-green-600 text-white rounded-r-lg font-semibold hover:bg-green-700 disabled:bg-gray-400 text-lg"
         >
           {isLoading ? 'Searching...' : 'Search'}
         </button>
@@ -98,9 +98,9 @@ export default function Home() {
             {results.map((result) => (
               <div 
                 key={result.id} 
-                className="bg-white p-6 rounded-lg shadow-lg shadow-indigo-50 border border-gray-200 transition-all hover:shadow-indigo-200"
+                className="bg-white p-6 rounded-lg shadow-lg shadow-green-50 border border-gray-200 transition-all hover:shadow-green-200"
               >
-                <h3 className="text-xl font-bold text-indigo-700">
+                <h3 className="text-xl font-bold text-green-700">
                   {result.disease_name} / {result.ayurvedic_term}
                 </h3>
                 <p className="text-sm text-gray-600 mt-1 font-medium">
