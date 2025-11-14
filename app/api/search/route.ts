@@ -48,7 +48,7 @@ const db = [
 const fuse = new Fuse(db, {
   keys: ['disease_name', 'ayurvedic_term'],
   includeScore: true,
-  threshold: 0.6,
+  threshold: 0.3,
   isCaseSensitive: false,
 });
 
